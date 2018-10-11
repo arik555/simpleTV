@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	SimpleTV | Series | Records
+{% endblock %}
+
+{% block content %}
+<div class="card-body" style="background-color: white;">
+<table class="table">
+	<thead class="thead-dark">
+		<tr>
+			<!-- <th>#</th> -->
+			<th>Name</th>
+			<th>Year</th>
+			<th>Genre</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for each in movie_objects %}
+			<tr>
+				<!-- <td>{{ forloop.counter }}</td> -->
+				<td>{{ each.movie_title }}</td>
+				<td>{{ each.movie_year }}</td>
+				<td>{{ each.movie_genre }}</td>
+				<td>
+					<a href="{% url 'movie_edit' pk=each.id %}" class="btn btn-outline-info btn-sm">Edit</a>
+					<a href="{% url 'movie_delete' pk=each.id %}" class="btn btn-outline-danger btn-sm">Delete</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% if movie_objects.has_other_pages %}
+  <ul class="pagination justify-content-center">
+    {% if movie_objects.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ movie_objects.previous_page_number }}">Previous</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Previous</span></li>
+    {% endif %}
+    <li class="page-item disabled"><span class="page-link">Page</span></li>
+	<li class="page-item active"><span class="page-link">{{ movie_objects.number }} <span class="sr-only">(current)</span></span></li>
+	<li class="page-item disabled"><span class="page-link">of</span></li>
+	<li class="page-item disabled"><span class="page-link">{{ movie_objects.paginator.num_pages }}</span></li>
+    {% if movie_objects.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ movie_objects.next_page_number }}">Next</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Next</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+</div>
+{% endblock %}

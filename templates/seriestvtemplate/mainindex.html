@@ -1,0 +1,108 @@
+{% extends '../base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+<style type="text/css">
+    #car-card {
+        background: #000;
+    }
+    #p-title {
+        color: #fff;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    .car-card img ~ button  {display:none;}
+    .car-card img:hover ~ button {display:block;}
+</style>
+<style type="text/css">
+  #main_container {
+    background-color: #f8f8ff !important;
+    padding-bottom: 10px;
+  }
+  #nav_top {
+    box-shadow: 0 8px 6px -6px black;
+  }
+</style>
+<div class="col-sm-12">
+    <form class="form-inline mb-2 mt-2 justify-content-center" method="POST">
+      {% csrf_token %}
+        <input class="form-control mr-sm-2" type="search" placeholder="Search in Series" aria-label="Search" name="qs">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+<div class="card shadow_power" id="starjalshatv">
+  <div class="card-header"><span class="display-4">Series</span>
+    <select onchange="myLangFilter(this);" class="form-control w-50" style="float: right;">
+      <option value="">Sort By Language</option>
+      <option value="{% url 'seriestv_home' %}">Default</option>
+      <option value="{% url 'seriestv_view_tweak' lang_id=1 %}">English</option>
+      <option value="{% url 'seriestv_view_tweak' lang_id=2 %}">Hindi</option>
+      <option value="{% url 'seriestv_view_tweak' lang_id=3 %}">Bengali</option>
+      <option value="{% url 'seriestv_view_tweak' lang_id=4 %}">Other</option>
+    </select>
+  </div>
+  <script type="text/javascript">
+    function myLangFilter(argument) {
+      $(argument).attr('selected', 'selected');
+      window.location.assign(argument.value);
+    }
+  </script>
+  <div class="card-body">
+    {% for each in series_objects %}
+        {% if each.mobile_compatibility is False %}
+      <div class="card bg-light shadow_power mb-2" id="not_compatible">
+        {% else %}
+      <div class="card bg-light shadow_power mb-2">
+        {% endif %}
+          <div class="card-header">{{ each.series_title }} S{{ each.series_season }}</div>
+          <div class="card-body owl-carousel owl-theme">
+            {% for every in each.allepisodes.all %}
+            <div class="item">
+                <div class="card text-center" id="car-card" style="margin: 1px;">
+                    <img src="{{ each.series_icon|safe }}" alt="Profile Pic 1" class=" img-thumbnail" style="height: 240px !important;"/>
+                    <p id="p-title">{{ every.episode_title|truncatechars:25 }}</p>
+                    <a href="{% url 'detail_series' season=each.series_season episode=every.episode_no id=every.id %}" class="btn btn-danger">Watch E{{ every.episode_no }}</a>
+                </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+    {% endfor %}
+  </div>
+  	{% if series_objects.has_other_pages %}
+    <div class="card-footer">
+  <ul class="pagination justify-content-center">
+    {% if series_objects.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ series_objects.previous_page_number }}">Previous</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Previous</span></li>
+    {% endif %}
+    <li class="page-item disabled"><span class="page-link">Page</span></li>
+            <li class="page-item active"><span class="page-link">{{ series_objects.number }} <span class="sr-only">(current)</span></span></li>
+            <li class="page-item disabled"><span class="page-link">of</span></li>
+            <li class="page-item disabled"><span class="page-link">{{ series_objects.paginator.num_pages }}</span></li>
+    {% if series_objects.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ series_objects.next_page_number }}">Next</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Next</span></li>
+    {% endif %}
+  </ul>
+  </div>
+{% endif %}
+  
+</div>
+</div>
+{% endblock %}
+{% block add_scripts %}
+$(document).ready(function(){
+  $('.owl-carousel').owlCarousel({
+    loop:true,
+    margin:10,
+    nav:true,
+    autoWidth:true,
+    
+});
+});
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends '../base.html' %}
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block content %}
+<!-- <img src="{{ instance.series.series_icon|safe }}" /> -->
+<h1>{{ instance.series.series_title }} | S{{ instance.series.series_season }}E{{ instance.episode_no }} | {{ instance.episode_title }}</h1>
+<style type="text/css">
+	body {
+		background: #36383F;
+		color: white;
+	}
+</style>
+{% if OpenLoad %}
+<div class="col-sm-8 mx-auto mt-5">
+	<iframe src="https://oload.cloud/embed/{{ instance.episode_link|safe }}/" scrolling="no" frameborder="0" width="640" height="360" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" id="player_power"></iframe>
+</div>
+{% elif Clappr %}
+<div class="col-sm-8 mx-auto mt-5" id="player-wrapper"></div>
+<script type="text/javascript">
+  // var player = jwplayer('player-wrapper');
+  // player.setup({
+  //   file: "{{ instance.channel_link|safe }}"
+  // });
+  var playerElement = document.getElementById("player-wrapper");
+	var player = new Clappr.Player({
+	source: "{{ instance.channel_link|safe }}",
+	mute: false
+	});
+	player.attachTo(playerElement);
+	$('#player-wrapper div').attr('id', 'player_power');
+	$('.spinner-three-bounce').removeAttr('id');
+</script>
+{% elif NoFlag %}
+<div class="col-sm-8 mx-auto mt-5">
+	<video controls controlsList="nodownload" width="640" height="360" id="player_power">
+	<source src="{{ instance.episode_link|safe }}" type="video/mp4" /></video>
+</div>
+{% elif RapidVideo %}
+<div class="col-sm-8 mx-auto mt-5">
+	<iframe src="https://www.rapidvideo.com/e/{{ instance.episode_link|safe }}?autostart=true" allow="autoplay; fullscreen" frameborder="no" scrolling="no" allowfullscreen="yes" style="width: 640px; height: 360px;" id="player_power" sandbox="allow-top-navigation"></iframe>
+</div>
+{% else %}
+<p>Hello</p>
+<div id="player-wrapper" class="col-sm-8 mx-auto mt-5"></div>
+<script type="text/javascript">
+  	var playerElement = document.getElementById("player-wrapper");
+  	var ytid = "{{ instance.episode_link|safe }}"; // with CC 
+  //var ytid = '9ZXTBHqG6CA'; // no CC
+	var player = new Clappr.Player({
+  	source: ytid,
+ 	poster: 'https://i.ytimg.com/vi/'+ytid+'/hqdefault.jpg',
+  	height: 360,
+  	width: 640,
+  	plugins: [YoutubePlugin, YoutubePlugin],
+  	YoutubeVars : {"languageCode":"en"}
+	});
+	player.attachTo(playerElement);
+	$('#player-wrapper div').attr('id', 'player_power');
+	$('.spinner-three-bounce').removeAttr('id');
+</script>
+{% endif %}
+{% endblock %}

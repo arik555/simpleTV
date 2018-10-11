@@ -1,0 +1,61 @@
+{% extends '../base.html' %}
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block content %}
+<style type="text/css">
+	body {
+		background: #36383F;
+		color: white;
+	}
+</style>
+<!-- <img src="{{ instance.movie_poster|safe}}" /> -->
+<div class="col-sm-8">
+	<h1>{{ instance.movie_title }} ({{ instance.movie_year }})</h1>
+</div>
+{% if OpenLoad %}
+<div class="col-sm-8 mx-auto mt-5">
+	<iframe src="https://oload.cloud/embed/{{ instance.movie_link|safe }}/" scrolling="no" frameborder="0" width="640" height="360" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" id="player_power"></iframe>
+</div>
+{% elif Clappr %}
+<div class="col-sm-8 mx-auto mt-5" id="player-wrapper"></div>
+<script type="text/javascript">
+  // var player = jwplayer('player-wrapper');
+  // player.setup({
+  //   file: "{{ instance.channel_link|safe }}"
+  // });
+  var playerElement = document.getElementById("player-wrapper");
+	var player = new Clappr.Player({
+	source: "{{ instance.movie_link|safe }}",
+	mute: false
+	});
+	player.attachTo(playerElement);
+	$('#player-wrapper div').attr('id', 'player_power');
+	$('.spinner-three-bounce').removeAttr('id');
+</script>
+{% elif NoFlag %}
+<div class="col-sm-8 mx-auto mt-5">
+	<video controls controlsList="nodownload" width="640" height="360" id="player_power">
+	<source src="{{ instance.movie_link|safe }}" type="video/mp4" /></video>
+</div>
+{% elif Youtube %}
+<div id="player-wrapper" class="col-sm-8 mx-auto mt-5"></div>
+<script type="text/javascript">
+  	var playerElement = document.getElementById("player-wrapper");
+  	var ytid = "{{ instance.movie_link|safe }}"; // with CC 
+	var player = new Clappr.Player({
+  	source: ytid,
+ 	poster: 'https://i.ytimg.com/vi/'+ytid+'/hqdefault.jpg',
+  	height: 360,
+  	width: 640,
+  	plugins: [YoutubePlugin, YoutubePlugin],
+  	YoutubeVars : {"languageCode":"en"}
+	});
+	player.attachTo(playerElement);
+	$('#player-wrapper div').attr('id', 'player_power');
+	$('.spinner-three-bounce').removeAttr('id');
+</script>
+{% endif %}
+{% endblock %}

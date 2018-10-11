@@ -1,0 +1,36 @@
+{% extends '../base.html' %}
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block content %}
+<style type="text/css">
+	body {
+		background: #36383F;
+		color: white;
+	}
+</style>
+<!-- <div class="col-sm-3">
+	<p class="lead" style="float: right;">{{ instance.channel_title }}</p>
+	<img src="{{ instance.channel_icon|safe}}" class="img-circle" />
+	<p class="display-4 mx-auto">{{ instance.channel_description }}</p>
+</div> -->
+<div class="col-sm-8">
+	<h1>{{ instance.serial_name }}</h1>
+	<p style="visibility: hidden;"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam sapiente</p>
+</div>
+<div class="col-sm-8 mx-auto" id="player-wrapper"></div>
+<script type="text/javascript">
+  	var playerElement = document.getElementById("player-wrapper");
+	var player = new Clappr.Player({
+	  //source: 'http://clappr.io/highline.mp4',
+	  source: "{{ instance.get_todays_link|safe }}",
+	  // poster: '',
+	  mute: false,
+	});
+	player.attachTo(playerElement);
+	$('#player-wrapper div').attr('id', 'player_power');
+	$('.spinner-three-bounce').removeAttr('id');
+</script>
+{% endblock %}

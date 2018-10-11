@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ block.super }}
+{% endblock %}
+
+{% block homepage %}
+<style type="text/css">
+  div.carousel-inner img {
+    width: 100%;
+    height: 540px;
+  }
+
+  @media screen and (max-width: 600px) {
+  div.carousel-inner img {
+    width: 100%;
+    height: 270px;
+  }
+}
+</style>
+<div id="demo" class="carousel slide" data-ride="carousel">
+
+  <!-- Indicators -->
+  <ul class="carousel-indicators">
+    <li data-target="#demo" data-slide-to="0" class="active"></li>
+    <li data-target="#demo" data-slide-to="1"></li>
+    <li data-target="#demo" data-slide-to="2"></li>
+    <li data-target="#demo" data-slide-to="3"></li>
+    <li data-target="#demo" data-slide-to="4"></li>
+  </ul>
+  
+  <!-- The slideshow -->
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="https://www2.movies4u.to/wp-content/uploads/2016/10/Hotel-Transylvania-3-Summer-Vacation-2018.jpg" alt="Los Angeles" width="1100" height="540" class="img-fluid">
+      <!-- <div class="carousel-caption">
+        <h3>New York</h3>
+        <p>We love the Big Apple!</p>
+      </div> -->
+    </div>
+    <div class="carousel-item">
+      <img src="https://www.nocreasnada.com/wp-content/uploads/2018/07/2018-07-13_5b48bb8b3727f_sky.jpg" alt="Chicago" width="1100" height="540" class="img-fluid">
+      <!-- <div class="carousel-caption">
+        <h3>New York</h3>
+        <p>We love the Big Apple!</p>
+      </div> -->
+    </div>
+    <div class="carousel-item">
+      <img src="https://geekyguruji.com/wp-content/uploads/2018/06/920663-mi-1.jpg" alt="New York" width="1100" height="540" class="img-fluid">
+      <!-- <div class="carousel-caption">
+        <h3>New York</h3>
+        <p>We love the Big Apple!</p>
+      </div> -->
+    </div>
+    <div class="carousel-item">
+      <img src="https://media-assets.bookbub.com/wp-content/uploads/2015/07/1200x628-Game-of-Thrones-Facebook-Image.jpg" alt="New York" width="1100" height="540" class="img-fluid">
+      <!-- <div class="carousel-caption">
+        <h3>New York</h3>
+        <p>We love the Big Apple!</p>
+      </div> -->
+    </div>
+    <div class="carousel-item">
+      <img src="https://1.bp.blogspot.com/-o0e5Bqu84Gk/WYSDaTt_krI/AAAAAAAAB5o/cqiUgCJcrngElypNBe9Vst_wbni2Wbm8ACEwYBhgL/s1600/dragon_ball_super_wallpaper___zamasu_saga__1_by_windyechoes-dagqy4z.png" alt="New York" width="1100" height="540" class="img-fluid">
+      <!-- <div class="carousel-caption">
+        <h3>New York</h3>
+        <p>We love the Big Apple!</p>
+      </div> -->
+    </div>
+  </div>
+  
+  <!-- Left and right controls -->
+  <a class="carousel-control-prev" href="#demo" data-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </a>
+  <a class="carousel-control-next" href="#demo" data-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </a>
+</div>
+<section class="bg-light pb-4">
+<div class="container">
+  <div class="row p-4">
+    <div class="col-sm-12 text-center">
+        <p class="h1">Stream Instantly. <b>Anytime. Anywhere.</b></p>
+    </div>
+  </div>
+  <div class="row p-4">
+    <div class="col-sm-12">
+      <p class="lead">Stream Fast and Free. Unlimited access to movies and TV shows in FHD quality with new conent being updated daily. Create your free account (for limited time) and experience full length premium videos.<br>
+        <a href="{% url 'register_user' %}">Try it now for free.</a>
+      </p>
+    </div>
+  </div>
+  <div class="row p-4">
+    <div class="col-sm-4 text-center">
+        <p class="h2">FHD Quality</p>
+        <img src="https://cdn2.iconfinder.com/data/icons/video-quality-2/64/Video_Quality_Cinema_HD-512.png" class="img-fluid mt-2" width="216" height="210">
+    </div>
+    <div class="col-sm-4 text-center">
+        <p class="h2">Ads Free</p>
+        <img src="https://cdn0.iconfinder.com/data/icons/general-line-set/512/no_ad-512.png" class="img-fluid mt-2" width="216" height="210">
+    </div>
+    <div class="col-sm-4 text-center">
+        <p class="h2">Plain and Simple</p>
+        <img src="https://cdn2.iconfinder.com/data/icons/svg-business-icons/512/Ok-512.png" class="img-fluid mt-2" width="216" style="height: 200px;">
+    </div>
+  </div>
+</div>
+</section>
+<style type="text/css">
+  
+</style>
+<section style="background-color: #fff;" class="pb-4">
+  <div class="container">
+    <p class="h1 pt-3">Recently Added</p>
+    <hr>
+    <div class="rows">
+      <div class="col-sm-12">
+        <p class="h3">Movies</p>
+        <div class="owl-carousel owl-theme">
+        {% for each in latest_movies %}
+          <div class="item">
+              <div class="card text-center" id="car-card" style="margin: 1px;">
+                  <img src="{{ each.movie_poster|safe }}" alt="Profile Pic 1" class=" img-thumbnail" style="height: 256px !important;"/>
+                  <p id="p-title">{{ each.movie_title|truncatechars:25 }}<br>({{ each.movie_year }})</p>
+                  <a href="{% url 'detail_mov' id=each.id %}" class="btn btn-success">Watch</a>
+              </div>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="rows">
+      <div class="col-sm-12">
+        <p class="h3">Episodes</p>
+        <div class="owl-carousel owl-theme">
+        {% for each in latest_episodes %}
+          <div class="item">
+              <div class="card text-center" id="car-card" style="margin: 1px;">
+                  <img src="{{ each.series.series_icon|safe }}" alt="Profile Pic 1" class="img-thumbnail" style="height: 256px !important;" />
+                  <p id="p-title">{{ each.series.series_title|truncatechars:21 }} S{{ each.series.series_season }}</p>
+                  <a href="{% url 'detail_series' season=each.series.series_season episode=each.episode_no id=each.id %}" class="btn btn-danger">Watch E{{ each.episode_no }}</a>
+              </div>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="rows">
+      <div class="col-sm-12">
+        <p class="h3">LiveTV</p>
+        <div class="owl-carousel owl-theme">
+        {% for each in latest_livetv %}
+          <div class="item">
+              <div class="card text-center" id="car-card" style="margin: 1px;">
+                  <img src="{{ each.channel_icon|safe }}" alt="Profile Pic 1" class=" img-thumbnail" style="height: 256px !important;"/>
+                  <p id="p-title">{{ each.channel_title|truncatechars:25 }}<br>({{ each.channel_description }})</p>
+                  <a href="{% url 'detail_live' slug=each.get_channel_good_name id=each.id %}" class="btn btn-primary">Watch</a>
+              </div>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}
+{% block add_scripts %}
+$(document).ready(function(){
+  $('.owl-carousel').owlCarousel({
+    loop:true,
+    margin:10,
+    nav:true,
+    autoWidth:true,
+    
+});
+});
+
+{% endblock %}

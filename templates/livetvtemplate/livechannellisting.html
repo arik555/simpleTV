@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="card-body" style="background-color: white;">
+<table class="table">
+	<thead class="thead-dark">
+		<tr>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for each in live_objects %}
+			<tr>
+				<td>{{ each.channel_title }}</td>
+				<td>{{ each.channel_description }}</td>
+				<td>
+					<a href="{% url 'livetv_edit' pk=each.id %}" class="btn btn-outline-info btn-sm">Edit</a>
+					<a href="{% url 'livetv_delete' pk=each.id %}" class="btn btn-outline-danger btn-sm">Delete</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% if live_objects.has_other_pages %}
+  <ul class="pagination justify-content-center">
+    {% if live_objects.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ live_objects.previous_page_number }}">Previous</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Previous</span></li>
+    {% endif %}
+    <li class="page-item disabled"><span class="page-link">Page</span></li>
+	<li class="page-item active"><span class="page-link">{{ live_objects.number }} <span class="sr-only">(current)</span></span></li>
+	<li class="page-item disabled"><span class="page-link">of</span></li>
+	<li class="page-item disabled"><span class="page-link">{{ live_objects.paginator.num_pages }}</span></li>
+    {% if live_objects.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ live_objects.next_page_number }}">Next</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Next</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+</div>
+{% endblock %}

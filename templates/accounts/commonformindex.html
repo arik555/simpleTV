@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block content %}
+<style type="text/css">
+	.addform {
+		border: 1px solid #c0c0db;
+		padding: 10px;
+		border-radius: 3px;
+		background-color: #fff;
+		border-top: none;
+	}
+	h2 {
+		border: 1px solid #c0c0db;
+		border-radius: 3px;
+		background-color: #c0c0db;
+		/*padding-bottom: 0;*/
+		margin-bottom: 0;
+		border-bottom: none;
+		padding: 8px;
+	}
+	#main_container {
+		background-color: #f8f8ff !important;
+		padding-bottom: 10px;
+	}
+	#nav_top {
+		box-shadow: 0 8px 6px -6px black;
+	}
+</style>
+<div class="col-sm-6 mx-auto mt-5" id="comm_div">
+	<h2 class="display-4" align="center">{{ header }}</h2>
+	<form method="POST" class="addform"> {% csrf_token %}
+		{% include '../bs4_form.html' with form=form %}
+  		<button type="submit" class="btn btn-primary">
+  			{% if forgot %}
+				Send Email Verification
+  			{% else %}
+  				{{ header }}
+  			{% endif %}
+  		</button>
+  		{% if login %}
+			<a href="{% url 'forgot_password' %}" class="btn btn-link">Forgot Password?</a>
+			<p>Don't have an account? <a href="{% url 'register_user' %}" class="btn btn-link">Register</a></p>
+  		{% endif %}
+  		{% if register %}
+		<p>Already have an account? <a href="{% url 'login_user' %}" class="btn btn-link">Login</a></p>
+  		{% endif %}
+	</form>
+</div>
+{% endblock %}
+</body>
+</html>

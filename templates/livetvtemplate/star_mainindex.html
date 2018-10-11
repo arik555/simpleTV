@@ -1,0 +1,36 @@
+{% extends '../base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+
+{% block content %}
+<style type="text/css">
+	#main_container {
+		background-color: #f8f8ff !important;
+		padding-bottom: 10px;
+	}
+	#nav_top {
+		box-shadow: 0 8px 6px -6px black;
+	}
+</style>
+<div class="col-sm-12">
+	<div class="card shadow_power mt-2" id="starjalshatv">
+	  <div class="card-header"><span class="display-4">StarJalsha</span><br><small class="text-muted">*Watch after 18:00 Hrs. IST</small></div>
+	  <div class="card-body">
+	  	<div class="card-columns">
+	  	{% for each_starjalsha in starjalsha_objects %}
+		  <div class="card bg-light shadow_power">
+		    <div class="card-body text-center">
+		      <p class="card-title lead">{{ each_starjalsha.serial_name }} <span> ({% now "d.m.Y" %})</span></p>
+		      <a href="{% url 'detail_starj' id=each_starjalsha.id %}" class="btn btn-info">Watch</a>
+		    </div>
+		  </div>
+		{% endfor %}
+		</div>
+	  </div> 
+	  <!-- <div class="card-footer">Footer</div> -->
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends '../base.html' %}
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block content %}
+<style type="text/css">
+	#main_container {
+		background-color: #f8f8ff !important;
+		padding-bottom: 10px;
+	}
+	#nav_top {
+		box-shadow: 0 8px 6px -6px black;
+	}
+	.bg-custom2 {
+		background: url('https://i.pinimg.com/originals/af/c4/3b/afc43bc08410e4b4b68c3f4d539fed8e.gif');
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
+	}
+</style>
+<div class="col-sm-12">
+	<form class="form-inline mb-2 mt-2 justify-content-center" method="POST">
+		{% csrf_token %}
+        <input class="form-control mr-sm-2" type="search" placeholder="Search in LiveTV" aria-label="Search" name="qs">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+	<div class="card shadow_power" id="livetv">
+	  <div class="card-header display-4">LiveTV</div>
+	  <div class="card-body bg-custom1">
+	  	<div class="card-columns">
+	  	{% for each_live in live_objects %}
+	  		{% if each_live.mobile_compatibility is False %}
+		  <div class="card bg-light shadow_power" id="not_compatible">
+		  	{% else %}
+		  <div class="card bg-light shadow_power">
+		  	{% endif %}
+		    <div class="card-body text-center bg-custom2">
+		      <p class="card-title lead">{{ each_live.channel_title }}</p>
+		      <p class="card-text">{{ each_live.channel_description }}</p>
+		      <a href="{% url 'detail_live' slug=each_live.get_channel_good_name id=each_live.id %}" class="btn btn-primary">Watch</a>
+		    </div>
+		  </div>
+		{% endfor %}
+		</div>
+	  </div> 
+		  	{% if live_objects.has_other_pages %}
+		<div class="card-footer">
+		  <ul class="pagination justify-content-center">
+		    {% if live_objects.has_previous %}
+		      <li class="page-item"><a class="page-link" href="?page={{ live_objects.previous_page_number }}">Previous</a></li>
+		    {% else %}
+		      <li class="page-item disabled"><span class="page-link">Previous</span></li>
+		    {% endif %}
+		    <li class="page-item disabled"><span class="page-link">Page</span></li>
+		        <li class="page-item active"><span class="page-link">{{ live_objects.number }} <span class="sr-only">(current)</span></span></li>
+		        <li class="page-item disabled"><span class="page-link">of</span></li>
+		        <li class="page-item disabled"><span class="page-link">{{ live_objects.paginator.num_pages }}</span></li>
+		    {% if live_objects.has_next %}
+		      <li class="page-item"><a class="page-link" href="?page={{ live_objects.next_page_number }}">Next</a></li>
+		    {% else %}
+		      <li class="page-item disabled"><span class="page-link">Next</span></li>
+		    {% endif %}
+		  </ul>
+		</div>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}
+
